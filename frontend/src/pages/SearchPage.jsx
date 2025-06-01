@@ -3,60 +3,54 @@ import SearchBar from '../components/SearchBar';
 import CharacterList from '../components/CharacterList';
 
 export default function SearchPage() {
-  // ← Вот здесь, в самом начале тела компонента, добавляем новые состояния:
-
-  // 1) query — текст, который вводит пользователь в поле поиска
+  
   const [query, setQuery] = useState('');
 
-  // 2) characters — массив найденных персонажей
   const [characters, setCharacters] = useState([]);
 
-  // 3) isLoading — индикатор загрузки (true, пока ждём ответ от бэкенда)
   const [isLoading, setIsLoading] = useState(false);
 
-  // 4) error — строка с текстом ошибки (если запрос не удался)
   const [error, setError] = useState(null);
 
-  // ● Добавляем два новых состояния для пагинации:
-  // 5) page — текущая страница (номер), по умолчанию 1
+  // Текущая страница (по умолчанию 1)
   const [page, setPage] = useState(1);
 
-  // 6) totalPages — общее число страниц, которое вернул API
+  // Общее число страниц которое вернул API
   const [totalPages, setTotalPages] = useState(0);
 
-  // Теперь, после всех хуков useState, идёт функция-поиска:
+  // Функция-поиска
   const handleSearch = async (newPage = 1) => {
-    // Если строка пустая — выходим
+    // Выход если пустая
     if (query.trim() === '') return;
 
-    // Устанавливаем текущую страницу в newPage
+    // Установка текущей страницы в newPage
     setPage(newPage);
 
-    // Запускаем индикатор загрузки
+    // Запуск индикатора загрузки
     setIsLoading(true);
 
-    // Сбрасываем прошлую ошибку и результаты
+    // Сброс прошлой ошибки и результаты
     setError(null);
     setCharacters([]);
 
     try {
-      // Делаем fetch к вашему бэкенду, подставляя newPage в параметр page
+      // Fetch к  бэкенду, подставление newPage в параметр page
       const response = await fetch(
         `http://localhost:3001/api/characters?name=${encodeURIComponent(query)}&page=${newPage}`
       );
 
       if (!response.ok) {
-        // Если бэкенд вернул 404 (не найдено) или другую ошибку
+        // При 404
         const respData = await response.json();
         throw new Error(respData.error || 'Сервер вернул ошибку');
       }
 
       const data = await response.json();
 
-      // Сохраняем список персонажей
+      // Сохранение списка персонажей
       setCharacters(data.results);
 
-      // Сохраняем общее число страниц из объекта data.info.pages
+      // Сохранение общего числа страниц из объекта data.info.pages
       setTotalPages(data.info.pages);
     } catch (err) {
       setError(err.message);
@@ -67,20 +61,20 @@ export default function SearchPage() {
 
   return (
     <div style={styles.pageContainer}>
-      <h1 style={styles.title}>Rick and Morty — Поиск персонажей</h1>
+      <h1 style={styles.title}>Rick and Morty</h1>
 
       {/* Поле поиска */}
       <SearchBar
         query={query}
         setQuery={setQuery}
-        onSearch={() => handleSearch(1)} // При новом поиске всегда сбрасываем на первую страницу
+        onSearch={() => handleSearch(1)} // При новом поиске сброс на первую страницу
         isLoading={isLoading}
       />
 
-      {/* Если есть ошибка, покажем её */}
+      {/* Вывод ошибки */}
       {error && <p style={styles.errorText}>{error}</p>}
 
-      {/* Если идёт загрузка — показываем текст загрузки, иначе — список и пагинацию */}
+      {/* Текст загрузки */}
       {isLoading ? (
         <p style={styles.loadingText}>Идёт загрузка данных...</p>
       ) : (
@@ -88,7 +82,7 @@ export default function SearchPage() {
           {/* Список найденных персонажей */}
           <CharacterList characters={characters} />
 
-          {/* Если всего страниц больше одной, показываем пагинацию */}
+          {/* Пагинация */}
           {totalPages > 1 && (
             <div style={styles.pagination}>
               <button
@@ -116,7 +110,6 @@ export default function SearchPage() {
   );
 }
 
-// Стили для компонента (inline-стили)
 const styles = {
   pageContainer: {
     maxWidth: '800px',
