@@ -1,0 +1,27 @@
+/* src/index.css */
+
+/* Сбрасываем отступы у body, задаём шрифты */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Стили для заголовка <h1> */
+h1 {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* Убираем маркеры у списка ul/li (если понадобится в будущем) */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Стили ссылок (опционально) */
+a {
+  text-decoration: none;
+  color: inherit;
+}
