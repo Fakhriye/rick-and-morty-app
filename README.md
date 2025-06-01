@@ -3,6 +3,7 @@
 > **Автор:** Fakhriye                                 
 > **GitHub:** [github.com/Fakhriye/rick-and-morty-app](https://github.com/Fakhriye/rick-and-morty-app)
 
+![Rick and Morty](/rickandmorty.jpg)
 
 ## Описание 
 
